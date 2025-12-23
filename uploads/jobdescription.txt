@@ -1,0 +1,9 @@
+Job Title: Data Analyst
+Responsibilities:
+- Analyse large datasets to extract insights.
+- Build dashboards and visualisations.
+- Work with cross-functional teams.
+Requirements:
+- Proficiency in Python and SQL.
+- Experience with data visualisation tools (Tableau, Power BI).
+- Strong problem-solving skills.
