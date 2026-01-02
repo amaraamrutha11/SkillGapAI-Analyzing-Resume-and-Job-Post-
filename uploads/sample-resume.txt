@@ -1,5 +1,5 @@
-AMARA SRI SAI SUDHA AMRUTHA VARSHINI
-Email: amruthaamara1104@gmail.com | Phone: +91 7780511443 |LinkedIn: https://www.linkedin.com/in/amara-sri-sai-sudha-amrutha-varshini- 027710311/ | GitHub: https://github.com/amaraamrutha11
+    AMARA SRI SAI SUDHA AMRUTHA VARSHINI
+Email: amruthaamara1104@gmail.com | Phone: +91 7780511443 LinkedIn: https://www.linkedin.com/in/amara-sri-sai-sudha-amrutha-varshini- 027710311/ | GitHub: https://github.com/amaraamrutha11
 
 Objective
 Motivated third-year Computer Science student with a strong interest in software development and problem-solving. Seeking an opportunity to work on innovative projects at IIT Madras through the Summer Fellowship Programme to enhance my technical skills and gain research exposure.
@@ -9,7 +9,8 @@ St Ann's College of Engineering And Technology - Chirala, India. Expected in 06/
 B.Tech in Computer Science | [Expected in 06/2026] | CGPA: [8.3]
 
 Technical Skills
-Programming Languages: Python(Basics), SQL Web Technologies: HTML, CSS, React, Node.js Databases: MySQL, MongoDB
+Programming Languages: Python, SQL 
+Web Technologies: HTML, CSS, React, Node.js Databases: MySQL, MongoDB
 Artificial Intelligence: NLP
 FrameWorks: Numpy, Pandas
 
@@ -34,14 +35,14 @@ Projects
 • Preprocessed text data by tokenisation, stopword removal, and lemmatisation for better accuracy.Implemented machine learning models to classify sentiments as positive, negative, or neutral.
 
 Certifications & Courses
-•  AWS-Forage
-•  The Joy Of Computing Using Python-NPTEL
-•  Agentic Application and Google Cloud Databases-Code Vipassana, Google
-International Level Student Workshop on Data Science using Python-Brain O Vision
-JavaScript-EDX
-Web Development-EDX
-Generative AI-Guvi
-AI Learnathon-Guvi/Sawit
+• AWS-Forage
+• The Joy Of Computing Using Python-NPTEL
+• Agentic Application and google cloud databases-Code Vipassana, Google
+* International Level Student Workshop on Data Science using Python-Brain O Vision
+* JavaScript-EDX
+* Web Development-EDX
+* Generative AI-Guvi
+* AI Learnathon-Guvi/Sawit
 
 Achievements & Extracurricular Activities
 • Participated in the CSI PPT presentation on Wireless Communications

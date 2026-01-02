@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>SkillGapAI</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
     <style>
         body {
@@ -149,6 +151,7 @@
     <div class="header">
         <h1>SkillGapAI Analyzing Resume and Job Post for Skill Gap</h1>
         <p>Resume and Job Description Parsing Interface</p>
+
     </div>
 
     {% if error_msg %}
@@ -190,10 +193,61 @@
         <textarea readonly>{{ jd_text }}</textarea>
     </details>
 
+    <h2> 📊 Skill Gap Analysis </h2>
+    <canvas id="skillChart" width="400" height="200"></canvas>
+    <h3>✅ Matched Skills</h3>
+    {% if matched_skills %}
+    <ul>
+        {% for skill in matched_skills %}
+            <li>{{ skill }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No matched skills found.</p>
+    {% endif %}
+    <h3>❌ Missing Skills (Need to Learn)</h3>
+    {% if missing_skills %}
+    <ul>
+        {% for skill in missing_skills %}
+            <li>{{ skill }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No missing skills 🎉</p>
+    {% endif %}
+
+    <h3>📈 Match Percentage</h3>
+    <p><strong>{{ match_percentage }}%</strong></p>
+
     <div class="footer">
         SkillGapAI | Resume & Job Description Parsing System
     </div>
 
 </div>
+<script>
+const matchedCount = {{ matched_skills | length }};
+const missingCount = {{ missing_skills | length }};
+
+const ctx = document.getElementById('skillChart').getContext('2d');
+
+new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Matched Skills', 'Missing Skills'],
+        datasets: [{
+            data: [matchedCount, missingCount],
+            backgroundColor: ['#4CAF50', '#F44336']
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+</script>
 </body>
 </html>
