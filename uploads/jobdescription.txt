@@ -7,6 +7,7 @@ Requirements:
 - Proficiency in Python and SQL.
 - Experience with data visualisation tools (Tableau, Power BI).
 - Strong problem-solving skills.
+- Basic working knowledge of machine learning concepts for data analysis.
 Soft Skills:
 - communication.
 -Professionalism in English

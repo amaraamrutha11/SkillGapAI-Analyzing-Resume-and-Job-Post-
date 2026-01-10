@@ -10,34 +10,34 @@ B.Tech in Computer Science | [Expected in 06/2026] | CGPA: [8.3]
 
 Technical Skills
 Programming Languages: Python, SQL 
-Web Technologies: HTML, CSS, React, Node.js Databases: MySQL, MongoDB
+Web Technologies: HTML, CSS, React, Node.js Databases: MySQL, MongoDB, JavaScript
 Artificial Intelligence: NLP
 FrameWorks: Numpy, Pandas
 
 Work Experience
-[AI&ML] – [InternzLearn]
-[June/2024] – [August/2024] | [Bangalore]#Remote Internship
-• Learned about NLP.
-• Learned the Wumpus world(agent navigating) using AI, explored datasets using NLP.
-[CloudComputing] – [SkillVertex]
-[May/2023] – [July/2023] | [Bangalore] #Remote Internship
-• Managed AWS services including S3 buckets, EC2 instances, and security groups to deploy and maintain web applications.
-• Led the flexible target tracking auto-scaling policy, slashing infrastructure & boosting system reliability by 40%.
+[AI&ML] ï¿½ [InternzLearn]
+[June/2024] ï¿½ [August/2024] | [Bangalore]#Remote Internship
+ï¿½ Learned about NLP.
+ï¿½ Learned the Wumpus world(agent navigating) using AI, explored datasets using NLP.
+[CloudComputing] ï¿½ [SkillVertex]
+[May/2023] ï¿½ [July/2023] | [Bangalore] #Remote Internship
+ï¿½ Managed AWS services including S3 buckets, EC2 instances, and security groups to deploy and maintain web applications.
+ï¿½ Led the flexible target tracking auto-scaling policy, slashing infrastructure & boosting system reliability by 40%.
 
 
 Projects
-[Burger Billing System] – [Python]
-• Developed a billing system to generate itemised invoices for burger shops.
-• Automated calculations for totals, taxes, and discounts, improving billing efficiency.
-• Implemented an intuitive user interface using Tkinter / Flask / Django.
-[Sentiment Analysis on Dataset] – [Python, NLP]
-• Performed sentiment analysis on a dataset using Natural Language Processing (NLP) techniques.
-• Preprocessed text data by tokenisation, stopword removal, and lemmatisation for better accuracy.Implemented machine learning models to classify sentiments as positive, negative, or neutral.
+[Burger Billing System] ï¿½ [Python]
+ï¿½ Developed a billing system to generate itemised invoices for burger shops.
+ï¿½ Automated calculations for totals, taxes, and discounts, improving billing efficiency.
+ï¿½ Implemented an intuitive user interface using Tkinter / Flask / Django.
+[Sentiment Analysis on Dataset] ï¿½ [Python, NLP]
+ï¿½ Performed sentiment analysis on a dataset using Natural Language Processing (NLP) techniques.
+ï¿½ Preprocessed text data by tokenisation, stopword removal, and lemmatisation for better accuracy.Implemented machine learning models to classify sentiments as positive, negative, or neutral.
 
 Certifications & Courses
-• AWS-Forage
-• The Joy Of Computing Using Python-NPTEL
-• Agentic Application and google cloud databases-Code Vipassana, Google
+ï¿½ AWS-Forage
+ï¿½ The Joy Of Computing Using Python-NPTEL
+ï¿½ Agentic Application and google cloud databases-Code Vipassana, Google
 * International Level Student Workshop on Data Science using Python-Brain O Vision
 * JavaScript-EDX
 * Web Development-EDX
@@ -45,5 +45,5 @@ Certifications & Courses
 * AI Learnathon-Guvi/Sawit
 
 Achievements & Extracurricular Activities
-• Participated in the CSI PPT presentation on Wireless Communications
-• Member of [Cruisers Elite event], mentored junior students in competitive programming.
+ï¿½ Participated in the CSI PPT presentation on Wireless Communications
+ï¿½ Member of [Cruisers Elite event], mentored junior students in competitive programming.

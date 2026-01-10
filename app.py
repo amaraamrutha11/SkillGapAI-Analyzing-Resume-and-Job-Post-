@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import pdfplumber
 from docx import Document
 from io import BytesIO
@@ -14,16 +14,6 @@ app = Flask(__name__)
 
 ALLOWED_EXTENSIONS = {'pdf', 'docx', 'txt'}
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
-
-# ------------------ ERROR HANDLER ------------------
-@app.errorhandler(413)
-def file_too_large(e):
-    return render_template(
-        'index.html',
-        resume_text="",
-        jd_text="",
-        error_msg="File too large. Maximum size is 5 MB."
-    ), 413
 
 # ------------------ FILE HELPERS ------------------
 def allowed_file(filename):
@@ -41,147 +31,121 @@ def extract_docx(data):
     return "\n".join(p.text for p in doc.paragraphs)
 
 def extract_txt(data):
-    return data.decode('utf-8', errors='ignore')
+    return data.decode("utf-8", errors="ignore")
 
 # ------------------ SKILL LISTS ------------------
 TECH_SKILLS = [
-    "python", "sql",
-    "data analysis", "data analytics",
+    "python", "sql", "data analysis", "data analytics",
     "data visualization", "data visualisation",
     "tableau", "power bi",
-    "dashboard", "dashboards"
+    "machine learning", "statistics"
 ]
 
 SOFT_SKILLS = [
-    "communication",
-    "problem solving", "problem-solving",
-    "leadership", "team leader", "team leadership",
-    "professionalism",
-    "english communication"
+    "communication", "problem solving",
+    "leadership", "team leader",
+    "teamwork", "professionalism"
 ]
 
 ALL_SKILLS = TECH_SKILLS + SOFT_SKILLS
 
-# ------------------ KEYWORD EXTRACTION ------------------
-def extract_skills(text, skill_list):
-    text = text.lower()
-    found_skills = set()
-    for skill in skill_list:
-        if skill.lower() in text:
-            found_skills.add(skill)
-    return sorted(found_skills)
-
-# ------------------ spaCy EXTRACTION ------------------
-def spacy_skill_extractor(text, skills):
+# ------------------ MILESTONE-2: SKILL EXTRACTION ------------------
+def spacy_extract(text, skills):
     doc = nlp(text.lower())
     matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
-    patterns = [nlp.make_doc(skill) for skill in skills]
-    matcher.add("SKILLS", patterns)
-
-    matches = matcher(doc)
-    found_skills = set()
-    for _, start, end in matches:
-        found_skills.add(doc[start:end].text.lower())
-
-    return sorted(found_skills)
-
-# ------------------ BERT EXTRACTION ------------------
-def bert_skill_extractor(text, skills, threshold=0.6):
-    sentences = [sent.text for sent in nlp(text).sents]
-    skill_embeddings = bert_model.encode(skills, convert_to_tensor=True)
+    matcher.add("SKILLS", [nlp.make_doc(skill) for skill in skills])
 
     found = set()
-    for sentence in sentences:
-        sent_embedding = bert_model.encode(sentence, convert_to_tensor=True)
-        similarities = util.cos_sim(sent_embedding, skill_embeddings)[0]
-
-        for idx, score in enumerate(similarities):
-            if score >= threshold:
-                found.add(skills[idx])
+    for _, start, end in matcher(doc):
+        found.add(doc[start:end].text.lower())
 
     return sorted(found)
 
-# ------------------ SKILL GAP ------------------
-def calculate_skill_gap(resume_skills, jd_skills):
-    resume_set = set(resume_skills)
-    jd_set = set(jd_skills)
+# ------------------ MILESTONE-3: BERT SIMILARITY ------------------
+def bert_skill_gap(resume_skills, jd_skills):
+    if not resume_skills or not jd_skills:
+        return [], [], [], []
 
-    matched_skills = sorted(resume_set & jd_set)
-    missing_skills = sorted(jd_set - resume_set)
+    resume_emb = bert_model.encode(resume_skills, convert_to_tensor=True)
+    jd_emb = bert_model.encode(jd_skills, convert_to_tensor=True)
 
-    match_percentage = 0
-    if jd_set:
-        match_percentage = round((len(matched_skills) / len(jd_set)) * 100, 2)
+    similarity_matrix = util.cos_sim(jd_emb, resume_emb)
 
-    return matched_skills, missing_skills, match_percentage
+    matched = []
+    partial = []
+    missing = []
+    heatmap = []
 
-# ------------------ ROUTE ------------------
+    for i, jd_skill in enumerate(jd_skills):
+        scores = similarity_matrix[i].tolist()
+        max_score = max(scores)
+
+        heatmap.append([round(s, 2) for s in scores])
+
+        if max_score >= 0.80:
+            matched.append(jd_skill)
+        elif max_score >= 0.50:
+            partial.append(jd_skill)
+        else:
+            missing.append(jd_skill)
+
+    return matched, partial, missing, heatmap
+
+# ------------------ ROUTES ------------------
 @app.route('/', methods=['GET', 'POST'])
 def index():
     resume_text = ""
     jd_text = ""
-    error_msg = ""
 
     resume_skills = []
     jd_skills = []
 
     matched_skills = []
+    partial_skills = []
     missing_skills = []
-    match_percentage = 0
+    heatmap = []
 
     if request.method == 'POST':
         resume = request.files.get('resume')
         jd = request.files.get('jd')
 
-        if resume and resume.filename and allowed_file(resume.filename):
+        if resume and allowed_file(resume.filename):
             data = resume.read()
             ext = resume.filename.rsplit('.', 1)[1].lower()
-            if ext == 'pdf':
-                resume_text = extract_pdf(data)
-            elif ext == 'docx':
-                resume_text = extract_docx(data)
-            elif ext == 'txt':
-                resume_text = extract_txt(data)
+            resume_text = extract_pdf(data) if ext == 'pdf' else extract_docx(data) if ext == 'docx' else extract_txt(data)
 
-        if jd and jd.filename and allowed_file(jd.filename):
+        if jd and allowed_file(jd.filename):
             data = jd.read()
             ext = jd.filename.rsplit('.', 1)[1].lower()
-            if ext == 'pdf':
-                jd_text = extract_pdf(data)
-            elif ext == 'docx':
-                jd_text = extract_docx(data)
-            elif ext == 'txt':
-                jd_text = extract_txt(data)
+            jd_text = extract_pdf(data) if ext == 'pdf' else extract_docx(data) if ext == 'docx' else extract_txt(data)
 
-    # -------- RESUME SKILLS --------
     if resume_text:
-        resume_skills = set()
-        resume_skills |= set(extract_skills(resume_text, ALL_SKILLS))
-        resume_skills |= set(spacy_skill_extractor(resume_text, ALL_SKILLS))
-        resume_skills |= set(bert_skill_extractor(resume_text, ALL_SKILLS))
+        resume_skills = spacy_extract(resume_text, ALL_SKILLS)
 
-    # -------- JD SKILLS --------
     if jd_text:
-        jd_skills = set()
-        jd_skills |= set(extract_skills(jd_text, ALL_SKILLS))
-        jd_skills |= set(spacy_skill_extractor(jd_text, ALL_SKILLS))
-        jd_skills |= set(bert_skill_extractor(jd_text, ALL_SKILLS))
+        jd_skills = spacy_extract(jd_text, ALL_SKILLS)
 
-    # -------- GAP --------
-    matched_skills, missing_skills, match_percentage = calculate_skill_gap(
+    matched_skills, partial_skills, missing_skills, heatmap = bert_skill_gap(
         resume_skills, jd_skills
     )
 
     return render_template(
-        'index.html',
+        "index.html",
         resume_text=resume_text,
         jd_text=jd_text,
-        error_msg=error_msg,
+        resume_skills=resume_skills,
+        jd_skills=jd_skills,
         matched_skills=matched_skills,
+        partial_skills=partial_skills,
         missing_skills=missing_skills,
-        match_percentage=match_percentage
+        heatmap=heatmap
     )
 
+# ------------------ MILESTONE-4 REDIRECT ------------------
+@app.route("/dashboard")
+def dashboard():
+    return redirect("http://localhost:8501")
+
 # ------------------ RUN ------------------
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)

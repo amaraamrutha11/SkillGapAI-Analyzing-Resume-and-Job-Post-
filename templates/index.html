@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>SkillGapAI</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         body {
@@ -15,7 +16,7 @@
         }
 
         .container {
-            max-width: 950px;
+            max-width: 1100px;
             margin: auto;
             background: #ffffff;
             padding: 25px;
@@ -28,20 +29,8 @@
             color: white;
             padding: 25px;
             border-radius: 8px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             text-align: center;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .header p {
-            margin-top: 8px;
-            font-size: 15px;
-            opacity: 0.9;
         }
 
         .upload-section {
@@ -58,25 +47,6 @@
             background: #f9fbfc;
         }
 
-        .upload-box h3 {
-            margin-top: 0;
-            color: #1e3c72;
-        }
-
-        .upload-box p {
-            font-size: 13px;
-            color: #555;
-            margin-bottom: 8px;
-        }
-
-        .upload-box small {
-            color: #777;
-        }
-
-        input[type="file"] {
-            margin-top: 8px;
-        }
-
         button {
             background: linear-gradient(135deg, #3498db, #1e88e5);
             color: white;
@@ -85,62 +55,36 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 10px;
-        }
-
-        button:hover {
-            background: linear-gradient(135deg, #1e88e5, #1565c0);
-        }
-
-        hr {
-            margin: 30px 0;
-            border: none;
-            border-top: 1px solid #ddd;
         }
 
         textarea {
             width: 100%;
-            height: 180px;
-            padding: 12px;
-            resize: none;
+            height: 160px;
+            padding: 10px;
             border-radius: 6px;
             border: 1px solid #ccc;
             background: #fafafa;
-            font-size: 14px;
         }
 
-        details {
-            margin-bottom: 20px;
-        }
-
-        summary {
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-
-        .error {
-            background: #fdecea;
-            color: #c0392b;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-
-        .footer {
-            text-align: center;
+        h2 {
             margin-top: 30px;
-            color: #888;
-            font-size: 13px;
+            color: #1e3c72;
         }
 
-        @media (max-width: 768px) {
-            .upload-section {
-                flex-direction: column;
-            }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        table th {
+            background: #f0f4f8;
         }
     </style>
 </head>
@@ -148,106 +92,128 @@
 <body>
 <div class="container">
 
+    <!-- HEADER -->
     <div class="header">
         <h1>SkillGapAI Analyzing Resume and Job Post for Skill Gap</h1>
-        <p>Resume and Job Description Parsing Interface</p>
-
     </div>
 
-    {% if error_msg %}
-        <div class="error">{{ error_msg }}</div>
-    {% endif %}
+    <!-- DASHBOARD BUTTON (TOP) -->
+    <div style="text-align:center; margin-bottom:25px;">
+        <a href="/dashboard" target="_blank">
+            <button>📊 Open Dashboard</button>
+        </a>
+    </div>
 
+    <!-- FORM -->
     <form method="POST" enctype="multipart/form-data">
-
         <div class="upload-section">
-
             <div class="upload-box">
                 <h3>📄 Upload Resume</h3>
-                <p>Accepted formats: PDF, DOCX, TXT</p>
-                <small>Maximum file size: 5 MB</small><br>
                 <input type="file" name="resume" accept=".pdf,.docx,.txt">
             </div>
-
             <div class="upload-box">
                 <h3>📝 Upload Job Description</h3>
-                <p>Accepted formats: PDF, DOCX,TXT</p>
-                <small>Maximum file size: 5 MB</small><br>
                 <input type="file" name="jd" accept=".pdf,.docx,.txt">
             </div>
-
         </div>
-
-        <button type="submit">📤 Upload & Parse</button>
+        <button type="submit">📤 Upload & Analyze</button>
     </form>
 
     <hr>
 
-    <details open>
-        <summary>📑 Parsed Resume Content</summary>
-        <textarea readonly>{{ resume_text }}</textarea>
-    </details>
+    <!-- ================== MILESTONE 1 ================== -->
+    <h2>📑 Milestone-1: Resume & JD Parsing</h2>
 
-    <details open>
-        <summary>📑 Parsed Job Description Content</summary>
-        <textarea readonly>{{ jd_text }}</textarea>
-    </details>
+    <textarea readonly>{{ resume_text }}</textarea>
+    <textarea readonly>{{ jd_text }}</textarea>
 
-    <h2> 📊 Skill Gap Analysis </h2>
-    <canvas id="skillChart" width="400" height="200"></canvas>
+    <!-- ================== MILESTONE 2 ================== -->
+    <h2>🧠 Milestone-2: Skill Extraction</h2>
+
+    <h3>Resume Skills</h3>
+    <ul>
+        {% for skill in resume_skills %}
+        <li>{{ skill }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Job Description Skills</h3>
+    <ul>
+        {% for skill in jd_skills %}
+        <li>{{ skill }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- CIRCLE GRAPH -->
+    <h3>📊 Skill Distribution Overview</h3>
+    <canvas id="matchOverviewChart" width="50" height="50"></canvas>
+
+    <!-- ================== MILESTONE 3 ================== -->
+    <h2>📈 Milestone-3: Skill Gap Analysis (BERT)</h2>
+
     <h3>✅ Matched Skills</h3>
-    {% if matched_skills %}
-    <ul>
-        {% for skill in matched_skills %}
-            <li>{{ skill }}</li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>No matched skills found.</p>
-    {% endif %}
-    <h3>❌ Missing Skills (Need to Learn)</h3>
-    {% if missing_skills %}
-    <ul>
-        {% for skill in missing_skills %}
-            <li>{{ skill }}</li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>No missing skills 🎉</p>
-    {% endif %}
+    <ul>{% for s in matched_skills %}<li>{{ s }}</li>{% endfor %}</ul>
 
-    <h3>📈 Match Percentage</h3>
-    <p><strong>{{ match_percentage }}%</strong></p>
+    <h3>🟡 Partial Skills</h3>
+    <ul>{% for s in partial_skills %}<li>{{ s }}</li>{% endfor %}</ul>
 
-    <div class="footer">
-        SkillGapAI | Resume & Job Description Parsing System
-    </div>
+    <h3>❌ Missing Skills</h3>
+    <ul>{% for s in missing_skills %}<li>{{ s }}</li>{% endfor %}</ul>
+
+    <!-- BUBBLE GRAPH -->
+    <h3>🔥 Skill Similarity Matrix</h3>
+    <canvas id="similarityHeatmap" width="600" height="400"></canvas>
 
 </div>
+
+<!-- ================== SCRIPTS ================== -->
 <script>
 const matchedCount = {{ matched_skills | length }};
+const partialCount = {{ partial_skills | length }};
 const missingCount = {{ missing_skills | length }};
 
-const ctx = document.getElementById('skillChart').getContext('2d');
-
-new Chart(ctx, {
+new Chart(document.getElementById('matchOverviewChart'), {
     type: 'doughnut',
     data: {
-        labels: ['Matched Skills', 'Missing Skills'],
+        labels: ['Matched', 'Partial', 'Missing'],
         datasets: [{
-            data: [matchedCount, missingCount],
-            backgroundColor: ['#4CAF50', '#F44336']
+            data: [matchedCount, partialCount, missingCount],
+            backgroundColor: ['#4CAF50', '#FFC107', '#F44336']
         }]
-    },
+    }
+});
+</script>
+
+<script>
+const resumeSkills = {{ resume_skills | tojson }};
+const jdSkills = {{ jd_skills | tojson }};
+const heatmap = {{ heatmap | tojson }};
+
+const bubbleData = [];
+for (let i = 0; i < jdSkills.length; i++) {
+    for (let j = 0; j < resumeSkills.length; j++) {
+        let score = heatmap[i][j];
+        bubbleData.push({
+            x: j,
+            y: i,
+            r: score * 15,
+            backgroundColor: score >= 0.8 ? '#4CAF50' : score >= 0.5 ? '#FFC107' : '#F44336'
+        });
+    }
+}
+
+new Chart(document.getElementById('similarityHeatmap'), {
+    type: 'bubble',
+    data: { datasets: [{ data: bubbleData }] },
     options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'bottom'
-            }
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { ticks: { callback: (v,i)=>resumeSkills[i] }},
+            y: { ticks: { callback: (v,i)=>jdSkills[i] }}
         }
     }
 });
 </script>
+
 </body>
 </html>
